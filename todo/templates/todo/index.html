@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Python To-Do App</title>
+</head>
+<body>
+<h1>To Do:</h1>
+{% if to_do_list %}
+    <form action="{% url 'complete' %}" method="post">
+    {% csrf_token %}
+        <table>
+            <tr>
+                <th>#</th>
+                <th>To-Do Item</th>
+                <th>Date Assigned</th>
+                <th>Date Due</th>
+                <th>Completed?</th>
+                <th>Date Completed</th>
+            </tr>
+            {% for item in to_do_list %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.todo_text }}</td>
+                <td>{{ item.assigned_date }}</td>
+                <td>{{ item.due_date }}</td>
+                <td><input name="completed" type="checkbox" title="completed" value="{{ item.complete }}" onclick="this.form.submit()" /></td>
+                <td>{{ item.completed_date }}</td>
+                <input type="hidden" name="id" value="{{ item.id }}" />
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+{% else %}
+    <p>Your to-do list is empty!</p>
+{% endif %}
+<h2>Add a to-do item:</h2>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'add' %}" method="post">
+{% csrf_token %}
+    <label for="todo_text">Task: </label><input type="text" name="todo_text" value="" />
+    <label for="due_date">Due date: </label><input type="date" name="due_date"/>
+    <input type="submit" value="Add to list" />
+</form>
+</body>
+</html>
