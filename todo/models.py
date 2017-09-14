@@ -18,5 +18,9 @@ class ToDo(models.Model):
         self.due_date = due_date
 
     def complete_task(self):
-        self.complete = True
-        self.completed_date = date.today
+        if not self.complete:
+            self.complete = True
+            self.completed_date = date.today()
+        else:
+            self.complete = False
+            self.completed_date = None

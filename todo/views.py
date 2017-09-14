@@ -17,6 +17,9 @@ def add(request):
     new_task.save()
     return redirect(reverse('index'))
 
-def complete(request):
 
+def complete(request):
+    todo = ToDo.objects.get(id=request.POST['todo_id'])
+    todo.complete_task()
+    todo.save()
     return redirect(reverse('index'))
